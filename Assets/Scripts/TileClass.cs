@@ -7,7 +7,10 @@ public class TileClass : MonoBehaviour
 {
 
     
-    [SerializeField] private Sprite TileSprite;
+    [SerializeField] private SpriteRenderer TileSprite;
+
+    public Vector2 gridPos;
+    public bool buildable = true;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +26,6 @@ public class TileClass : MonoBehaviour
 
     public void setSprite(string path)
     {
-        TileSprite = UtilityScript.loadSprite(path);
+        TileSprite.sprite = UtilityScript.loadSprite(path);
     }
 }

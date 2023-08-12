@@ -6,9 +6,15 @@ public class CameraScript : MonoBehaviour
 {
     private Vector3 dragOrigin;
     private bool isDragging = false;
+    [SerializeField] private Camera myCamera;
+    private float FOV = 5;
 
     void Update()
     {
+        myCamera.orthographicSize = FOV;
+
+
+        // camera drag
         if (Input.GetMouseButtonDown(0))
         {
             dragOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -28,5 +34,9 @@ public class CameraScript : MonoBehaviour
             Vector3 move = dragOrigin - currentPos;
             transform.position += move;
         }
+
+        // camera zoom
+        float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
+        FOV = Mathf.Clamp(zoomDelta * 4 + FOV, 0.25f, 128);
     }
 }
