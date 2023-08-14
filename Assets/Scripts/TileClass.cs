@@ -11,6 +11,7 @@ public class TileClass : MonoBehaviour
 
     public Vector2 gridPos;
     public bool buildable = true;
+    // public GameObject tileBuilding;
 
     // Start is called before the first frame update
     void Start()

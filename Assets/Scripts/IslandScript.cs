@@ -72,11 +72,9 @@ public class IslandScript : MonoBehaviour
                 return;
             }
 
-            float chance = Mathf.Clamp(size - dist * 2, -100, 80) + Mathf.Pow( 
-                (isTile(x + 1, y) ? 3.34f : 0) + 
-                (isTile(x, y + 1) ? 3.34f : 0) + 
-                (isTile(x - 1, y) ? 3.34f : 0) + 
-                (isTile(x, y - 1) ? 3.34f : 0), 2);
+            int neighborTiles = (isTile(x + 1, y) ? 1 : 0) + (isTile(x, y + 1) ? 1 : 0) + (isTile(x - 1, y) ? 1 : 0) + (isTile(x, y - 1) ? 1 : 0);
+
+            float chance = Mathf.Clamp(size - dist * 2, -100, 80) + ((neighborTiles > 2) ? 1000 : neighborTiles*50);
 
             if (Random.Range(0, 100) <= chance)
             {
