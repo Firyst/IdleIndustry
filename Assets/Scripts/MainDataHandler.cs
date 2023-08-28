@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Numerics;
+using Leguar.TotalJSON;
 
 
 public class MainDataHandler : MonoBehaviour
@@ -22,23 +23,73 @@ public class MainDataHandler : MonoBehaviour
          * 
          */
         Debug.Log("Creating debug game database...");
-        var db = new MyDatabase();
+        var db = new MyDatabase(true);
 
-        var testobj = new ItemListObject();
-        testobj.itemList = new Item[] { db.getItemByID(1), db.getItemByID(2) };
-        
-        Debug.Log(JsonUtility.ToJson(testobj));
+        Recipe test2 = new();
+        test2.id = "recipe.steel";
+        test2.TechIdRequired = "tech.metallurgy";
+        test2.inputItems = new();
+        test2.inputItems.Add("item.iron_ore", 2);
+        test2.inputItems.Add("item.coal", 1);
+        test2.outputItems = new();
+        test2.outputItems.Add("item.steel", 1);
+        test2.baseSpeed = 1.0f;
+
+        var test3 = test2;
+        test3.id = "recipe.steel2";
+
+        List<Recipe> recipes = new List<Recipe> { test2, test3 };
+
+        var test4 = new Test();
+        test4.rec = recipes;
+
+        var json = (JSON.Serialize(test2).CreatePrettyString());
+        print(json);
+
+
+
+        var testRecipe = JSON.ParseString(json).Deserialize<Recipe>();
+        print(JSON.Serialize(testRecipe).CreatePrettyString());
+        print(JSON.Serialize(testRecipe).CreatePrettyString() == json);
+
+        print(JSON.Serialize(test4).CreatePrettyString());
     }
 }
 
-
-[System.Serializable]
-public class ItemListObject
+public class Test
 {
-
-    public Item[] itemList;
+    public List<Recipe> rec;
 }
 
+public class Building
+{
+    // global bulding id
+    public string id;
+
+
+}
+
+public class Recipe
+{
+    // global recipe id
+    public string id;
+
+    // id of techonolgy that is required to unlock this recipe
+    public string TechIdRequired;
+
+    // item_id: amount
+    public Dictionary<string, int> inputItems;
+    public Dictionary<string, int> outputItems;
+
+    // speed multiplier for recipe
+    public float baseSpeed;
+
+}
+
+
+/// <summary>
+/// Describes an in-game item. May be used to access texture.
+/// </summary>
 public class Item
 {
     public int id;
@@ -58,9 +109,20 @@ public class Item
 
 public class MyDatabase
 {
-    private Dictionary<int, Item> items;
+    [SerializeField]
+    private Dictionary<string, Item> items;
+
+    public MyDatabase(Dictionary<string, Item> items)
+    {
+        this.items = items;
+    }
 
     public MyDatabase()
+    {
+        this.items = new();
+    }
+
+    public MyDatabase(bool auto)
     {
         items = new();
 
@@ -75,7 +137,7 @@ public class MyDatabase
             }
             
 
-            items.Add(int.Parse(KVPair.Key),
+            items.Add(KVPair.Key,
                 new Item(
                     int.Parse(KVPair.Key),
                     BigInteger.Parse(KVPair.Value["StoredAmount"]),
@@ -86,14 +148,14 @@ public class MyDatabase
         Debug.Log("Loaded " + items.Count.ToString() + " items.");
     }
 
-    public Item getItemByID(int id)
+    public Item getItemByID(string id)
     {
         if (items.ContainsKey(id))
         {
             return items[id];
         } else
         {
-            Debug.LogError("Cannot find item with ID " + id.ToString() + " in database!");
+            Debug.LogError("Cannot find item with ID " + id + " in database!");
             return null;
         }
     }

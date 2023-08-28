@@ -11,7 +11,7 @@ public class CameraScript : MonoBehaviour
     private float FOV = 5;
     private bool buildingMode;
     [SerializeField] private GameObject buildGrid;
-
+    
     void Update()
     {
         myCamera.orthographicSize = FOV;
@@ -40,7 +40,7 @@ public class CameraScript : MonoBehaviour
 
         // camera zoom
         float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
-        FOV = Mathf.Clamp(zoomDelta * 4 + FOV, 0.25f, 128);
+        FOV = Mathf.Clamp(zoomDelta * 8 + FOV, 0.25f, 128);
 
 
       
