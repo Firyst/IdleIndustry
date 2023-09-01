@@ -11,6 +11,9 @@ public class TileClass : MonoBehaviour
 
     public Vector2 gridPos;
     public bool buildable = true;
+
+    public string textureName;
+    public BuildingInstance building;
     // public GameObject tileBuilding;
 
     // Start is called before the first frame update
@@ -27,6 +30,28 @@ public class TileClass : MonoBehaviour
 
     public void setSprite(string path)
     {
+        textureName = path;
         TileSprite.sprite = UtilityScript.loadSprite(path);
     }
+
+    /// <summary>
+    /// Used for packing data for save in more compact way.
+    /// </summary>
+    /// <returns></returns>
+    public TileData getSaveData()
+    {
+        TileData res = new();
+        res.pos = gridPos;
+        res.bld = building;
+        return res;
+    }
+}
+
+/// <summary>
+/// Class for storing tile data.
+/// </summary>
+public class TileData
+{
+    public Vector2 pos;
+    public BuildingInstance bld;
 }

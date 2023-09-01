@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Numerics;
 using Leguar.TotalJSON;
+using System.IO;
+
 
 
 public class MainDataHandler : MonoBehaviour
@@ -61,12 +63,69 @@ public class Test
     public List<Recipe> rec;
 }
 
+
+/// <summary>
+/// Used for saving and loading island data.
+/// </summary>
+public class IslandData
+{
+    public string islandName;
+    public Dictionary<string, TileData> tiles;
+}
+
+/// <summary>
+/// This class is used to describe buldlings on the map
+/// </summary>
+public class BuildingInstance
+{
+    // used id
+    public string id;
+
+    // current recipe
+    public string selectedRecipe;
+
+    // rate that changes in case of throttling
+    public float externalRate;
+}
+
+
+/// <summary>
+/// Describes a building blueprint. This is used just for storing data and should not be edited.
+/// For building placed in-game BuildingInstance class is used.
+/// </summary>
 public class Building
 {
     // global bulding id
     public string id;
+    // some speecial data, like builing is a port
+    public string specialData;
 
+    // available recipes for current building.
+    public List<string> recipes;
 
+    // texture data
+    [System.NonSerialized]
+    public Texture2D texture;  // texture to be set
+    [SerializeField]
+    private string textureName;  // texture name to be stored
+
+    /// <summary>
+    /// Represents a tier (level) of current building. It also describes the cost.
+    /// </summary>
+    public class BuildingTier
+    {
+        // id of the tier.
+        public string tierId;
+
+        // production rate
+        public float rate;
+
+        // upgrade cost: item id and amount
+        public Dictionary<string, long> cost;
+    }
+
+    // tier data
+    public Dictionary<string, BuildingTier> tiers;
 }
 
 public class Recipe
@@ -244,3 +303,4 @@ public class CSVFile
         return output;
     }
 }
+
