@@ -9,6 +9,9 @@ using System.IO;
 
 public class MainDataHandler : MonoBehaviour
 {
+    public MyDatabase myDB;
+
+    [SerializeField] private UIBuilder UiBuilder;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +19,21 @@ public class MainDataHandler : MonoBehaviour
         var file = new CSVFile("Data/items");
 
         CreateDebugDB();
+
+        LoadDB();
+    }
+
+    private void LoadDB()
+    {
+        myDB = new();
+
+        // load all buildings
+        Debug.Log("Loading buildings...");
+        myDB.buildings = JSON.ParseString(Resources.Load<TextAsset>("Data/buildings").text).Deserialize<Dictionary<string, Building>>();
+        Debug.Log(string.Format("<color=green>Successfully loaded {0} building entries.</color>", myDB.buildings.Count));
+
+        UiBuilder.Init();
+
     }
 
     private void CreateDebugDB()
@@ -24,7 +42,10 @@ public class MainDataHandler : MonoBehaviour
          * Creates a example json db using existing structure.
          * 
          */
+
         Debug.Log("Creating debug game database...");
+
+        /*
         var db = new MyDatabase(true);
 
         Recipe test2 = new();
@@ -55,6 +76,33 @@ public class MainDataHandler : MonoBehaviour
         print(JSON.Serialize(testRecipe).CreatePrettyString() == json);
 
         print(JSON.Serialize(test4).CreatePrettyString());
+        */
+
+        var db = new MyDatabase();
+
+        Dictionary<string, Building> buildings = new();
+
+        buildings.Add("test", new Building());
+
+        var bld = new Building();
+
+
+        var tier = new Building.BuildingTier();
+        tier.TechIdRequired = "-1";
+        tier.cost = new();
+        tier.cost.Add("item.stone", 10);
+
+        bld.tiers = new();
+        bld.tiers.Add("tier.0", tier);
+
+        tier.cost["item.stone"] = 25;
+        bld.tiers.Add("tier.1", tier);
+
+        buildings.Add("test2", bld);
+
+        var json = (JSON.Serialize(buildings).CreatePrettyString());
+        // print(json);
+
     }
 }
 
@@ -106,8 +154,12 @@ public class Building
     // texture data
     [System.NonSerialized]
     public Texture2D texture;  // texture to be set
+    [System.NonSerialized]
+    public Texture2D texture2;  // secondary texture to be set (unnecessary)
     [SerializeField]
     private string textureName;  // texture name to be stored
+    [SerializeField]
+    private string textureName2;  // secondary texture name to be stored
 
     /// <summary>
     /// Represents a tier (level) of current building. It also describes the cost.
@@ -116,6 +168,9 @@ public class Building
     {
         // id of the tier.
         public string tierId;
+
+        // id of techonolgy that is required to unlock this tier
+        public string TechIdRequired;
 
         // production rate
         public float rate;
@@ -169,7 +224,9 @@ public class Item
 public class MyDatabase
 {
     [SerializeField]
-    private Dictionary<string, Item> items;
+    public Dictionary<string, Item> items;
+    [SerializeField]
+    public Dictionary<string, Building> buildings;
 
     public MyDatabase(Dictionary<string, Item> items)
     {
@@ -178,7 +235,9 @@ public class MyDatabase
 
     public MyDatabase()
     {
+        // empty init
         this.items = new();
+        this.buildings = new();
     }
 
     public MyDatabase(bool auto)

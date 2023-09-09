@@ -1,0 +1,92 @@
+{
+	"test": {
+		"id": "debug",
+		"specialData": null,
+		"recipes": null,
+		"textureName": null,
+		"textureName2": null,
+		"tiers": null
+	},
+	"test2": {
+		"id": "debug2",
+		"specialData": null,
+		"recipes": null,
+		"textureName": null,
+		"textureName2": null,
+		"tiers": {
+			"tier.0": {
+				"tierId": null,
+				"TechIdRequired": "-1",
+				"rate": 0.0,
+				"cost": {
+					"item.stone": 25
+				}
+			},
+			"tier.1": {
+				"tierId": null,
+				"TechIdRequired": "-1",
+				"rate": 0.0,
+				"cost": {
+					"item.stone": 25
+				}
+			}
+		}
+	},
+	"road": {
+		"id": "tile.road",
+		"specialData": "roadTile",
+		"recipes": null,
+		"textureName": "road-straight",
+		"textureName2": null,
+		"tiers": {
+			"tier.0": {
+				"tierId": "tier.0",
+				"TechIdRequired": "-1",
+				"rate": 0.0,
+				"cost": {
+					"item.stone": 25
+				}
+			}
+		}
+	},
+	"test4": {
+		"id": "debug",
+		"specialData": null,
+		"recipes": null,
+		"textureName": null,
+		"textureName2": null,
+		"tiers": null
+	},
+	"test5": {
+		"id": "debug",
+		"specialData": null,
+		"recipes": null,
+		"textureName": null,
+		"textureName2": null,
+		"tiers": null
+	},
+	"test6": {
+		"id": "debug",
+		"specialData": null,
+		"recipes": null,
+		"textureName": null,
+		"textureName2": null,
+		"tiers": null
+	},
+	"test7": {
+		"id": "debug",
+		"specialData": null,
+		"recipes": null,
+		"textureName": null,
+		"textureName2": null,
+		"tiers": null
+	},
+	"test8": {
+		"id": "debug",
+		"specialData": null,
+		"recipes": null,
+		"textureName": null,
+		"textureName2": null,
+		"tiers": null
+	}
+}
